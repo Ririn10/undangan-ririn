@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>You're Invited - Ririn Amelia Putri</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        :root {
+            --color-primary: #0a192f;
+            --color-secondary: #1c335b;
+            --color-accent: #b8860b;
+            --color-gold-text: #ffd700;
+            --color-cream: #fdfaf6;
+            --color-text: #333;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: "Poppins", sans-serif; background-color: var(--color-cream); color: var(--color-text); overflow-x: hidden; }
+
+        .cover-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            display: flex; justify-content: center; align-items: center; text-align: center;
+            background: radial-gradient(circle at center, var(--color-secondary) 0%, var(--color-primary) 100%);
+            color: white; z-index: 1000; transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .cover-page.open { transform: translateY(-100%); }
+
+        .stars-container { position: absolute; width: 100%; height: 100%; }
+        .star { position: absolute; background: var(--color-gold-text); border-radius: 50%; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(100vh); opacity: 0; } }
+
+        .cover-content {
+            position: relative; z-index: 10; padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(8px);
+            border: 1px solid rgba(184, 134, 11, 0.3); border-radius: 20px;
+            max-width: 90%; width: 400px; animation: fadeIn 2s ease-out;
+        }
+
+        .cover-content .name {
+            font-family: "Cormorant Upright", serif; font-size: 2.8rem; margin-bottom: 10px;
+            background: linear-gradient(to right, #ffd700, #b8860b);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .open-invitation-btn {
+            padding: 14px 30px; background: var(--color-accent); color: white;
+            border: none; border-radius: 50px; cursor: pointer; transition: 0.3s;
+        }
+
+        #main-content { opacity: 0; transition: opacity 1s; }
+        #main-content.visible { opacity: 1; }
+
+        .hero-section {
+            height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), url('background.jpg') no-repeat center center/cover;
+            color: white;
+        }
+
+        .container { padding: 60px 20px; max-width: 700px; margin: 0 auto; text-align: center; }
+        .section-title { font-family: "Cormorant Upright", serif; font-size: 2.5rem; margin-bottom: 30px; color: var(--color-primary); }
+
+        .countdown-timer { display: flex; justify-content: center; gap: 15px; }
+        .time-card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); width: 80px; }
+        .time-card span { font-size: 1.5rem; font-weight: bold; color: var(--color-accent); display: block; }
+
+        .detail-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; align-items: center; gap: 15px; text-align: left; }
+        .detail-card .icon { font-size: 1.5rem; color: var(--color-accent); }
+
+        .slideshow-container { width: 100%; border-radius: 15px; overflow: hidden; background-color: #f0f0f0; margin-top: 15px; }
+        .mySlides { width: 100%; height: auto; display: none; object-fit: contain; max-height: 600px; animation: fadeEffect 1s; }
+        @keyframes fadeEffect { from {opacity: .4} to {opacity: 1} }
+
+        .map-wrapper { width: 100%; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 20px; }
+        .map-wrapper iframe { width: 100%; height: 350px; border: 0; display: block; }
+
+        .quote-text {
+            font-style: italic; color: var(--color-secondary); font-size: 1.1rem;
+            line-height: 1.6; margin-bottom: 20px; padding: 0 20px;
+        }
+        
+        .gift-instruction { font-size: 0.95rem; color: #555; margin-bottom: 25px; padding: 0 10px; }
+
+        .gift-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #eee; }
+        .copy-btn { margin-top: 10px; padding: 8px 15px; background: var(--color-primary); color: white; border: none; border-radius: 50px; cursor: pointer; font-size: 0.85rem; }
+
+        .music-control { 
+            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; 
+            background: var(--color-accent); color: white; border-radius: 50%; 
+            display: none; justify-content: center; align-items: center; 
+            z-index: 1001; cursor: pointer; border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .music-control.paused { background: #555; }
+
+        footer { padding: 30px; background: var(--color-primary); color: white; text-align: center; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <div class="cover-page" id="cover-page">
+        <div class="stars-container" id="stars-container"></div>
+        <div class="cover-content">
+            <h2>The Graduation of</h2>
+            <p class="name">Ririn Amelia Putri</p>
+            <p class="degree">Fisika (S.Si)</p>
+            <button id="open-invitation-btn" class="open-invitation-btn">
+                <i class="fas fa-envelope-open"></i> Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <audio id="background-music" loop><source src="happy.mp3" type="audio/mpeg" /></audio>
+    
+    <div class="music-control" id="music-control" onclick="toggleMusic()">
+        <i id="music-icon" class="fas fa-music"></i>
+    </div>
+
+    <main id="main-content">
+        <section class="hero-section">
+            <div class="hero-content"><h1>“A dream fulfilled, a new journey begins.”</h1></div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title reveal">Save The Date</h2>
+            <div id="countdown" class="countdown-timer reveal">
+                <div class="time-card"><span id="days">0</span><div class="label">Hari</div></div>
+                <div class="time-card"><span id="hours">0</span><div class="label">Jam</div></div>
+                <div class="time-card"><span id="minutes">0</span><div class="label">Menit</div></div>
+                <div class="time-card"><span id="seconds">0</span><div class="label">Detik</div></div>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title reveal">Acara Wisuda</h2>
+            <div class="detail-card reveal"><div class="icon"><i class="fas fa-calendar-alt"></i></div><div><h3>Tanggal</h3><p>Sabtu, 14 Februari 2026</p></div></div>
+            <div class="detail-card reveal"><div class="icon"><i class="fas fa-clock"></i></div><div><h3>Waktu</h3><p>12:15 WIB - Selesai</p></div></div>
+            <div class="detail-card reveal"><div class="icon"><i class="fas fa-map-marker-alt"></i></div><div><h3>Lokasi</h3><p>Auditorium Universitas Andalas, Padang</p></div></div>
+            
+            <div class="map-wrapper reveal">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.310103407638!2d100.45781687405296!3d-0.9144889353325633!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2fd2b5000dedb515%3A0xae9561659a51fd8c!2sAuditorium%20Universitas%20Andalas!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title reveal">Momen Spesial</h2>
+            <p class="quote-text reveal">"Doa dan dukungan kalian membuat perjalanan ini bermakna. Kehadiran kalian adalah hadiah terindah bagiku."</p>
+            <div class="slideshow-container reveal">
+                <img src="foto1.jpg" class="mySlides">
+                <img src="foto2.jpg" class="mySlides">
+                <img src="foto3.jpg" class="mySlides">
+            </div>
+        </section>
+
+        <section class="container">
+            <h2 class="section-title reveal">Kirim Hadiah</h2>
+            <p class="gift-instruction reveal">Doa restu adalah hadiah terbaik. Namun, jika ingin memberikan tanda kasih😉, dapat disalurkan melalui:</p>
+            
+            <div class="gift-card reveal">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Logo_dana_blue.svg/330px-Logo_dana_blue.svg.png" height="30">
+                <p id="dana-num">085775276994</p>
+                <button class="copy-btn" onclick="copyText('dana-num')">Salin Nomor DANA</button>
+            </div>
+            <div class="gift-card reveal">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/SeaBank.svg/375px-SeaBank.svg.png" height="30">
+                <p id="sea-num">901219812690</p>
+                <button class="copy-btn" onclick="copyText('sea-num')">Salin Nomor SeaBank</button>
+            </div>
+        </section>
+
+        <footer><p>© 2026 Ririn Amelia Putri</p></footer>
+    </main>
+
+    <script>
+        const music = document.getElementById("background-music");
+        const musicIcon = document.getElementById("music-icon");
+        const musicBtn = document.getElementById("music-control");
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.className = "fas fa-play";
+                musicBtn.classList.add("paused");
+            } else {
+                music.play().catch(e => console.log("Music play blocked"));
+                musicIcon.className = "fas fa-music";
+                musicBtn.classList.remove("paused");
+            }
+            isPlaying = !isPlaying;
+        }
+
+        document.getElementById("open-invitation-btn").addEventListener("click", () => {
+            document.getElementById("cover-page").classList.add("open");
+            document.getElementById("main-content").classList.add("visible");
+            musicBtn.style.display = "flex";
+            music.play().catch(e => console.log("Music play blocked"));
+            isPlaying = true;
+        });
+
+        const starsContainer = document.getElementById("stars-container");
+        for (let i = 0; i < 50; i++) {
+            let star = document.createElement("div");
+            star.className = "star";
+            star.style.left = Math.random() * 100 + "vw";
+            star.style.top = Math.random() * -100 + "vh";
+            let size = Math.random() * 2 + 1;
+            star.style.width = size + "px"; star.style.height = size + "px";
+            star.style.animationDuration = Math.random() * 3 + 2 + "s";
+            starsContainer.appendChild(star);
+        }
+
+        const targetDate = new Date("Feb 14, 2026 12:15:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if (diff > 0) {
+                document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+            }
+        }, 1000);
+
+        let slideIdx = 0;
+        function runSlides() {
+            let s = document.getElementsByClassName("mySlides");
+            for (let i = 0; i < s.length; i++) s[i].style.display = "none";
+            slideIdx++;
+            if (slideIdx > s.length) slideIdx = 1;
+            if(s.length > 0) s[slideIdx-1].style.display = "block";
+            setTimeout(runSlides, 3000);
+        }
+        runSlides();
+
+        window.addEventListener("scroll", () => {
+            document.querySelectorAll(".reveal").forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add("active");
+            });
+        });
+
+        function copyText(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+            alert("Nomor berhasil disalin!");
+        }
+    </script>
+</body>
+</html>
